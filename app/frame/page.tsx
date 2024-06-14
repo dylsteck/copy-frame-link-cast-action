@@ -1,12 +1,12 @@
 "use client"
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { useState } from 'react';
+import React from 'react';
 
-const Page = () => {
+const PageContent = () => {
     const searchParams = useSearchParams();
     const url = searchParams.get('url') || 'default';
-    const [copied, setCopied] = useState(false);
+    const [copied, setCopied] = React.useState(false);
 
     const copyToClipboard = () => {
         navigator.clipboard.writeText(url);
@@ -55,4 +55,10 @@ const Page = () => {
     );
 };
 
-export default Page;
+const FramePage = () => (
+    <React.Suspense fallback={<div>Loading...</div>}>
+        <PageContent />
+    </React.Suspense>
+);
+
+export default FramePage;

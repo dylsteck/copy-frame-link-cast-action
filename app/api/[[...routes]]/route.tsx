@@ -54,24 +54,47 @@ app.frame('/', (c) => {
 
 app.castAction(
   '/copy-frame-link',
-  async(c) => {
-    const { fid, hash } = c.actionData.castId;
-    const request = await fetch(`${BASE_URL}/api/cast/${hash}`);
-    const json = await request.json();
-    const frames = json.cast.frames;
-    const res = frames.length > 0 ? 
-    c.res({
-      message: `Click to copy/view frame`,
-      link: `${BASE_URL}/frame?url=${frames[0].frames_url}`,
-      type: 'message',
-    }) : 
-    c.res({
-      message: 'No frame found on this cast',
-      type: 'message',
-    });
-    return res;
-  }, 
-  { aboutUrl: GH_REPO_URL, name: "Copy Frame Link", description: `Copy and view the link of a frame so you don't lose it`, icon: "link-external" });
+  async (c) => {
+    try {
+      const { fid, hash } = c.actionData.castId;
+      const request = await fetch(`${BASE_URL}/api/cast/${hash}`);
+      const json = await request.json();
+
+      if (json && json.cast && json.cast.frames) {
+        const frames = json.cast.frames;
+        if (Array.isArray(frames) && frames.length > 0) {
+          return c.res({
+            message: `Click to copy/view frame`,
+            link: `${BASE_URL}/frame?url=${frames[0].frames_url}`,
+            type: 'message',
+          });
+        } else {
+          return c.res({
+            message: 'No frame found on this cast',
+            type: 'message',
+          });
+        }
+      } else {
+        return c.res({
+          message: 'Invalid response from server',
+          type: 'message',
+        });
+      }
+    } catch (error) {
+      return c.res({
+        message: `Error occurred: ${(error as Error).message}`,
+        type: 'message',
+      });
+    }
+  },
+  {
+    aboutUrl: GH_REPO_URL,
+    name: "Copy Frame Link",
+    description: `Copy and view the link of a frame so you don't lose it`,
+    icon: "link-external"
+  }
+);
+
 
 export const GET = handle(app)
 export const POST = handle(app)
