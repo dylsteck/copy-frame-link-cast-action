@@ -30,8 +30,18 @@ app.get('/cast/:hash', async (c) => {
 app.frame('/', (c) => {
   return c.res({
     image: (
-      <div style={{ color: 'black', display: 'flex', margin: 'auto', fontSize: 60 }}>
-        🔗 Add "Copy Frame Link" Action
+      <div style={{ color: 'black', backgroundColor: 'white', display: 'flex', margin: 'auto', fontSize: 60 }}>
+        <div style={{display: 'flex', flexDirection: 'column', margin: 'auto', alignItems: 'center', gap: 2}}>
+          <div>
+            🔗 Add "Copy Frame Link" Action
+          </div>
+          <div style={{fontSize: 40}}>
+           Create and view the link of a frame
+          </div>
+          <div style={{fontSize: 40, marginTop: 20}}>
+           Built by dylsteck.eth
+          </div>
+        </div>
       </div>
     ),
     intents: [
@@ -51,8 +61,8 @@ app.castAction(
     const frames = json.cast.frames;
     const res = frames.length > 0 ? 
     c.res({
-      message: `Frame copied: ${frames[0].frames_url}`,
-      link: frames[0].frames_url,
+      message: `Click to copy/view frame`,
+      link: `${BASE_URL}/frame?url=${frames[0].frames_url}`,
       type: 'message',
     }) : 
     c.res({
@@ -61,7 +71,7 @@ app.castAction(
     });
     return res;
   }, 
-  { aboutUrl: GH_REPO_URL, name: "Copy Frame Link", description: 'Copy the link of the frame to your clipboard', icon: "link-external" });
+  { aboutUrl: GH_REPO_URL, name: "Copy Frame Link", description: `Copy and view the link of a frame so you don't lose it`, icon: "link-external" });
 
 export const GET = handle(app)
 export const POST = handle(app)
