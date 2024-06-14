@@ -1,6 +1,6 @@
 /** @jsxImportSource frog/jsx */
 
-import { BASE_URL } from '@/app/consts';
+import { BASE_URL, GH_REPO_URL } from '@/app/consts';
 import { Button, Frog, TextInput } from 'frog'
 import { handle } from 'frog/vercel'
 
@@ -61,7 +61,7 @@ app.castAction(
     });
     return res;
   }, 
-  { aboutUrl: 'https://dylansteck.com', name: "Copy Frame Link", description: 'Copy the link of the frame to your clipboard', icon: "link-external" });
+  { aboutUrl: GH_REPO_URL, name: "Copy Frame Link", description: 'Copy the link of the frame to your clipboard', icon: "link-external" });
 
 export const GET = handle(app)
 export const POST = handle(app)
